@@ -1,10 +1,14 @@
 import React from "react";
 import styles from "./home-dashboard.component.css";
 import { Link, match } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { UserHasAccessReact } from "@openmrs/esm-api";
 import { useConfig } from "@openmrs/esm-module-config";
 import DashboardButton from "../dashboard-button/dashboard-button.component";
-import { useTranslation, Trans } from "react-i18next";
+
+export interface HomeDashboardProps {
+  match: match;
+}
 
 export default function HomeDashboard(props: HomeDashboardProps) {
   const { t } = useTranslation();
@@ -43,8 +47,4 @@ export default function HomeDashboard(props: HomeDashboardProps) {
       </section>
     </>
   );
-}
-
-interface HomeDashboardProps {
-  match: match;
 }
