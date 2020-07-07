@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { match } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { debounce, isEmpty } from "lodash";
 import { performPatientSearch } from "./patient-search.resource";
 import styles from "./patient-search.component.css";
@@ -10,7 +11,7 @@ export default function PatientSearch(props: PatientSearchProps) {
   const resultsPerPage = 10;
   const customReprestation =
     "custom:(patientId,uuid,identifiers,display,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,display),attributes:(value,attributeType:(name)))";
-
+  const { t } = useTranslation();
   const [searchResults, setSearchResults] = useState([]);
   const [emptyResult, setEmptyResult] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,7 +37,7 @@ export default function PatientSearch(props: PatientSearchProps) {
       performPatientSearch(searchTerm, customReprestation).then(({ data }) => {
         const results = data.results.map((res, i) => ({
           ...res,
-          index: i + 1
+          index: i + 1,
         }));
         const pagedResults = results.slice(0, resultsPerPage);
         setSearchResults(results);
@@ -58,7 +59,7 @@ export default function PatientSearch(props: PatientSearchProps) {
     return () => ac.abort();
   }, [searchTerm]);
 
-  const handleChange = debounce(searchTerm => {
+  const handleChange = debounce((searchTerm) => {
     setSearchTerm(searchTerm);
   }, searchTimeout);
 
@@ -86,9 +87,9 @@ export default function PatientSearch(props: PatientSearchProps) {
       <div className={styles.patientSearchHeader}>
         <input
           className={`omrs-type-title-5 ${styles.patientSearchInput}`}
-          placeholder="Search for patient"
+          placeholder={t("Search for patient", "Search for patient")}
           aria-label="Search for patient"
-          onChange={$event => handleChange($event.target.value)}
+          onChange={($event) => handleChange($event.target.value)}
           autoFocus
         />
       </div>
