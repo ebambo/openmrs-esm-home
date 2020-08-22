@@ -12,6 +12,12 @@ function setupOpenMRS() {
   return {
     lifecycle: () => import("./openmrs-esm-home"),
     activate: "home",
+    extensions: [
+      {
+        name: "home-button",
+        load: () => import("./button")
+      }
+    ]
   };
 }
 
