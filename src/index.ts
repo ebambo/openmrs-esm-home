@@ -1,5 +1,9 @@
+import { attach } from "@openmrs/esm-extension-manager";
 import "./set-public-path";
-import { backendDependencies } from "./openmrs-backend-dependencies";
+
+const backendDependencies = {
+  "webservices.rest": "2.24.0"
+};
 
 const importTranslation = require.context(
   "../translations",
@@ -14,11 +18,13 @@ function setupOpenMRS() {
     activate: "home",
     extensions: [
       {
-        name: "home-button",
+        name: "magic-button",
         load: () => import("./button")
       }
     ]
   };
 }
+
+attach("home-buttons", "magic-button");
 
 export { backendDependencies, importTranslation, setupOpenMRS };

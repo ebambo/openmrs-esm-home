@@ -81,3 +81,11 @@
     var(--dashboard-button-width) * 4 + var(--dashboard-button-margin) * 8
   );
 }
+
+.extButton button {
+  height: 7rem;
+  width: var(--dashboard-button-width);
+  margin: var(--dashboard-button-margin);
+  justify-content: center;
+  background-color: aqua;
+}
