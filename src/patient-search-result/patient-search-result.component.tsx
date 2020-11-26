@@ -1,10 +1,11 @@
 import React from "react";
 import { match } from "react-router-dom";
 import dayjs from "dayjs";
-import { always } from "kremling";
 import { interpolateString } from "@openmrs/esm-config";
 import { ConfigurableLink, useConfig } from "@openmrs/esm-react-utils";
-import styles from "./patient-search-result.component.css";
+import styles from "./patient-search-result.scss";
+
+import placeholder from "./placeholder.png";
 
 export interface PatientSearchResultsProps {
   patients: any;
@@ -14,11 +15,7 @@ export interface PatientSearchResultsProps {
 
 export default function PatientSearchResults(props: PatientSearchResultsProps) {
   const config = useConfig();
-  return props.patients.map(patient => renderPatient(patient));
-
-  function highlight(property) {
-    return property.toLowerCase().includes(props.searchTerm.toLowerCase());
-  }
+  return props.patients.slice(0, 5).map(patient => renderPatient(patient));
 
   function renderPatient(patient) {
     const preferredIdentifier =
@@ -32,48 +29,32 @@ export default function PatientSearchResults(props: PatientSearchResultsProps) {
           patientUuid: patient.uuid
         })}
       >
-        <span className={styles.resultNumber}>{patient.index}</span>
-        <div className={styles.patientCard}>
-          <div className={styles.patientNameContainer}>
-            <span
-              className={always("omrs-type-title-5")
-                .always("omrs-bold")
-                .always(styles.patientName)
-                .maybe(styles.highlight, highlight(patient.person.display))}
-            >
-              {patient.person.display}
-            </span>
-            <button className="omrs-unstyled">
-              <svg className="omrs-icon" fill="var(--omrs-color-interaction)">
-                <use xlinkHref="#omrs-icon-chevron-right"></use>
-              </svg>
-            </button>
-          </div>
-          <div className={styles.patientDetailsContainer}>
-            <div className={styles.tile}>
-              <div className={styles.patientData}>{patient.person.gender}</div>
+        {/* <span className={styles.resultNumber}>{patient.index}</span> */}
+        {/* <div className={styles.patientCard}> */}
+        <div>
+          <div className={styles.patientBanner}>
+            <div className={styles.patientAvatar}>
+              <img src={placeholder} alt="Patient avatar" />
             </div>
-            <div className={styles.tile}>
-              <div className={styles.patientData}>{patient.person.age}</div>
-              <div className={styles.patientDataLabel}>years</div>
-            </div>
-            <div className={styles.tile}>
-              <div className={styles.patientData}>
-                {dayjs(patient.person.birthdate).format("DD-MMM-YYYY")}
+            <div className={styles.patientInfo}>
+              <div className={styles.row}>
+                <span className={styles.patientName}>
+                  {patient.person.display}
+                </span>
               </div>
-              <div className={styles.patientDataLabel}>birth date</div>
-            </div>
-            <div className={styles.tile}>
-              <div
-                className={always(styles.patientData).maybe(
-                  styles.highlight,
-                  highlight(preferredIdentifier.identifier)
-                )}
-              >
-                {preferredIdentifier.identifier}
+              <div className={styles.row}>
+                <div className={styles.demographics}>
+                  <span>
+                    {patient.person.gender === "M" ? "Male" : "Female"}
+                  </span>{" "}
+                  &middot; <span>{patient.person.age} years</span> &middot;{" "}
+                  <span>{dayjs(patient.birthdate).format("DD-MMM-YYYY")}</span>
+                </div>
               </div>
-              <div className={styles.patientDataLabel}>
-                {preferredIdentifier.identifierType.display}
+              <div className={styles.row}>
+                <span className={styles.identifiers}>
+                  {preferredIdentifier.identifier}
+                </span>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import isEmpty from "lodash-es/isEmpty";
 import { performPatientSearch } from "./patient-search.resource";
 import styles from "./patient-search.component.css";
 import PatientSearchResults from "../patient-search-result/patient-search-result.component";
+import { PaginationNav } from "carbon-components-react";
 
 export default function PatientSearch(props: PatientSearchProps) {
   const searchTimeout = 300;
@@ -98,11 +99,11 @@ export default function PatientSearch(props: PatientSearchProps) {
           <div>
             <div className={styles.resultsCount}>
               <p>
-                <span className={styles.resultsText}>Results:</span>{" "}
-                {searchResults.length}{" "}
-              </p>
-              <p className={styles.resultsText}>
-                Page {currentPage} of {totalPages}
+                <span className={styles.resultsText}>
+                  {searchResults.length} patient charts containing:
+                  <br />
+                  {`"${searchTerm}"`}
+                </span>
               </p>
             </div>
             <PatientSearchResults
@@ -139,23 +140,19 @@ export default function PatientSearch(props: PatientSearchProps) {
           </div>
         </div>
       )}
-      <div className={styles.pagination}>
-        {showPreviousButton && (
-          <button
-            onClick={previousPage}
-            className={`omrs-btn omrs-outlined-action omrs-rounded ${styles.prevBtn}`}
-          >
-            Previous
-          </button>
-        )}
-        {showNextButton && (
-          <button
-            onClick={nextPage}
-            className={`omrs-btn omrs-outlined-action omrs-rounded ${styles.nextBtn}`}
-          >
-            Next
-          </button>
-        )}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          marginTop: "4.688rem"
+        }}
+      >
+        <PaginationNav
+          page={currentPage}
+          totalItems={pagedResults.length}
+          itemsShown={5}
+        />
       </div>
     </React.Fragment>
   );

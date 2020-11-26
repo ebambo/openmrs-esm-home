@@ -77,6 +77,10 @@ body {
   background-color: var(--omrs-color-background-canvas);
 }
 
+.searchResults a {
+  text-decoration: none;
+}
+
 .resultsText {
   color: var(--omrs-color-ink-medium-contrast);
 }
